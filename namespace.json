@@ -1,0 +1,10 @@
+{
+  "kind": "Namespace",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "doggybeans-1",
+    "labels": {
+      "name": "doggybeans-1"
+    }
+  }
+}
