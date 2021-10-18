@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: doggybeans
-          image: akka-sample-cluster-kubernetes:latest
+          image: sidutti/first:latest
           # remove for real clusters, useful for minikube
           imagePullPolicy: Never
           readinessProbe:
@@ -80,3 +80,15 @@ roleRef:
   kind: Role
   name: pod-reader
   apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: doggybeans-service
+spec:
+  selector:
+    app: doggybeans
+  ports:
+    - port: 9080
+      targetPort: 8080
+  type: LoadBalancer
