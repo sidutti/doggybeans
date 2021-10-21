@@ -42,7 +42,7 @@ public class Configurations {
         log.info("http ports are being listened to");
         Materializer mat = Materializer.matFromSystem(system);
         CompletionStage<ServerBinding> httpStage = Http.get(system)
-                .newServerAt("http", 8080)
+                .newServerAt("0.0.0.0", 8081)
                 .withMaterializer(mat)
                 .bind(createRoute());
         httpStage

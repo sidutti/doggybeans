@@ -4,6 +4,7 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
@@ -12,6 +13,9 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = "com.harish.sidutti.doggybeans.repository")
 public class MongoReactiveConfiguration extends AbstractReactiveMongoConfiguration {
+    @Value("${MONGODB_HOST}")
+    private String mongoDB;
+
     @Override
     protected String getDatabaseName() {
         return "local";
@@ -19,11 +23,11 @@ public class MongoReactiveConfiguration extends AbstractReactiveMongoConfigurati
 
     @Bean
     public MongoClient reactiveMongoClient() {
-        return MongoClients.create("mongodb://sidutti2:27017/?minpoolsize=10&connecttimeoutms=6000000&sockettimeoutms=600000");
+        return MongoClients.create("mongodb://" + mongoDB + ":27017/?minpoolsize=10&connecttimeoutms=6000000&sockettimeoutms=600000");
     }
     protected void configureClientSettings(MongoClientSettings.Builder builder) {
         builder.applicationName("sidutti");
-        ConnectionString connectionString = new ConnectionString("mongodb://sidutti2:27017/?minpoolsize=10&connecttimeoutms=6000000&sockettimeoutms=600000");
+        ConnectionString connectionString = new ConnectionString("mongodb://" + mongoDB + ":27017/?minpoolsize=10&connecttimeoutms=6000000&sockettimeoutms=600000");
 
         builder.applyConnectionString(connectionString);
         // customization hook
