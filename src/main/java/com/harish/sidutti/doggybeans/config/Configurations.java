@@ -3,7 +3,6 @@ package com.harish.sidutti.doggybeans.config;
 import akka.actor.ActorSystem;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
-import akka.http.javadsl.model.Uri;
 import akka.http.javadsl.server.Route;
 import akka.management.cluster.bootstrap.ClusterBootstrap;
 import akka.management.javadsl.AkkaManagement;
@@ -28,9 +27,8 @@ public class Configurations {
     public ActorSystem actorSystem(ApplicationContext applicationContext) throws ExecutionException, InterruptedException {
         ActorSystem system = ActorSystem.create("doggybeans");
         SPRING_EXTENSION_PROVIDER.get(system).initialize(applicationContext);
-        Uri uri = AkkaManagement.get(system).start().toCompletableFuture().get();
+        AkkaManagement.get(system).start();
         log.info("actor system and management initiated");
-        log.info(uri.path());
         ClusterBootstrap.get(system).start();
         log.info("Cluster bootstrap initiated");
         return system;
@@ -48,7 +46,7 @@ public class Configurations {
         httpStage
                 .whenComplete((binding, failure) -> {
                     if (failure == null) {
-                        system.log().info("HTTP server now listening at port 8080");
+                        system.log().info("HTTP server now listening at port 8081");
                     } else {
                         system.log().error(failure, "Failed to bind HTTP server, terminating.");
                         system.terminate();
