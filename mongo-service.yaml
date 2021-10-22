@@ -3,14 +3,12 @@ kind: Service
 metadata:
   name: mongo
   labels:
-    app.kubernetes.io/name: mongo
-    app.kubernetes.io/component: backend
-    app.kubernetes.io/namespace: doggybeans-1
+    name: mongo
+    component: backend
 spec:
   ports:
     - port: 27017
       targetPort: 27017
   selector:
-    app.kubernetes.io/name: mongo
-    app.kubernetes.io/namespace: doggybeans-1
-    app.kubernetes.io/component: backend
+    name: mongo
+    component: backend
