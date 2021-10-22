@@ -4,7 +4,8 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <target>System.out</target>
         <encoder>
-            <pattern>[%level] [%thread] - %msg</pattern>
+            <pattern>[%level] [%thread] - %msg MDC: {%mdc}%n
+            </pattern>
         </encoder>
     </appender>
 
