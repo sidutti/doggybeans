@@ -53,10 +53,6 @@ spec:
           args:
             - --bind_ip
             - 0.0.0.0
-          resources:
-            requests:
-              cpu: 100m
-              memory: 100Mi
           ports:
             - containerPort: 27017
           volumeMounts:
@@ -73,26 +69,9 @@ metadata:
   name: mongo-service
   labels:
     name: mongo-service
-    component: backend
 spec:
   ports:
     - port: 27017
       targetPort: 27017
   selector:
     name: mongo
-    component: backend
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mongo-service
-  labels:
-    name: mongo
-    component: backend
-spec:
-  ports:
-    - port: 27017
-      targetPort: 27017
-  selector:
-    name: mongo
-    component: backend

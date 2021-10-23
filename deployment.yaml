@@ -4,9 +4,8 @@ metadata:
   labels:
     app: doggybeans
   name: doggybeans
-
 spec:
-  replicas: 7
+  replicas: 3
   selector:
     matchLabels:
       app: doggybeans
@@ -38,9 +37,9 @@ spec:
             httpGet:
               path: "/ready"
               port: management
-            periodSeconds: 100
+            periodSeconds: 10
             failureThreshold: 30
-            initialDelaySeconds: 100
+            initialDelaySeconds: 10
           livenessProbe:
             httpGet:
               path: "/alive"
@@ -61,6 +60,7 @@ spec:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
+  namespace: default
   name: pod-reader
 rules:
   - apiGroups: [ "" ] # "" indicates the core API group
@@ -77,6 +77,8 @@ subjects:
   # For instance, `name: system:serviceaccount:myns:default` would refer to the default service account in namespace `myns`
   - kind: User
     name: system:serviceaccount
+  - kind: User
+    name: system:serviceaccount:default:default
   - kind: Group
     name: system:serviceaccount
 roleRef:
@@ -88,7 +90,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: doggybeans-service
-
 spec:
   selector:
     app: doggybeans
@@ -100,4 +101,7 @@ spec:
     - port: 9081
       targetPort: 8081
       name: akkahttp
+    - port: 8558
+      targetPort: 8558
+      name: akkamanagement
   type: NodePort
