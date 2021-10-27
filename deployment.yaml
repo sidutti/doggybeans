@@ -44,8 +44,8 @@ spec:
             httpGet:
               path: "/alive"
               port: management
-            periodSeconds: 100
-            failureThreshold: 50
+            periodSeconds: 10
+            failureThreshold: 10
             initialDelaySeconds: 20
           env:
             - name: NAMESPACE
@@ -85,23 +85,3 @@ roleRef:
   kind: Role
   name: pod-reader
   apiGroup: rbac.authorization.k8s.io
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: doggybeans-service
-spec:
-  selector:
-    app: doggybeans
-    tier: backend
-  ports:
-    - port: 9080
-      targetPort: 8080
-      name: http
-    - port: 9081
-      targetPort: 8081
-      name: akkahttp
-    - port: 8558
-      targetPort: 8558
-      name: akkamanagement
-  type: NodePort

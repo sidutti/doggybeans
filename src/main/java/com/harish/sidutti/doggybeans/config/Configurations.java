@@ -7,17 +7,12 @@ import akka.http.javadsl.server.Route;
 import akka.management.cluster.bootstrap.ClusterBootstrap;
 import akka.management.javadsl.AkkaManagement;
 import akka.stream.Materializer;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Locale;
 import java.util.concurrent.CompletionStage;
 
 import static akka.http.javadsl.server.Directives.*;
@@ -28,13 +23,8 @@ public class Configurations {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Bean
-    public ActorSystem actorSystem(ApplicationContext applicationContext) throws UnknownHostException {
-        Config baseConfig = ConfigFactory.load();
-        String serverName = InetAddress.getLocalHost().getCanonicalHostName().toLowerCase(Locale.ROOT);
-        String tcp = "akka.remote.artery.canonical.hostname = " + serverName;
-        log.info("Initializing Config with this={}", tcp);
-        Config remoteConfig = ConfigFactory.parseString(tcp);
-        ActorSystem system = ActorSystem.create("doggybeans", remoteConfig.withFallback(baseConfig));
+    public ActorSystem actorSystem(ApplicationContext applicationContext) {
+        ActorSystem system = ActorSystem.create("doggybeans");
         SPRING_EXTENSION_PROVIDER.get(system).initialize(applicationContext);
         AkkaManagement.get(system).start();
         log.info("actor system and management initiated");
