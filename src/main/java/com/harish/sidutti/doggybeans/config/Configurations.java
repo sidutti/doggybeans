@@ -79,27 +79,41 @@ public class Configurations {
         String actorName = "quoteMongoActor";
         return createRoutes(actorSystem, actorName);
     }
+
     @Bean
-    public ActorRef stockMongoActorRef(ActorSystem actorSystem){
+    public ActorRef stockMongoActorRef(ActorSystem actorSystem) {
         String actorName = "quoteMongoActor";
         return createRoutes(actorSystem, actorName);
     }
+
     @Bean
-    public ActorRef statsMongoActorRef(ActorSystem actorSystem){
+    public ActorRef statsMongoActorRef(ActorSystem actorSystem) {
         String actorName = "quoteMongoActor";
+        return createRoutes(actorSystem, actorName);
+    }
+
+    @Bean
+    public ActorRef metadataActorRef(ActorSystem actorSystem) {
+        String actorName = "metadataActor";
+        return createRoutes(actorSystem, actorName);
+    }
+
+    @Bean
+    public ActorRef historyProcessActorRef(ActorSystem actorSystem) {
+        String actorName = "historyProcess";
         return createRoutes(actorSystem, actorName);
     }
 
     private ActorRef createRoutes(ActorSystem actorSystem, String actorName) {
         List<String> routes = new ArrayList<>();
-        for (int i=0;i<100  ;i++ ) {
-            String tempName= actorName+i;
-            actorSystem.actorOf(SPRING_EXTENSION_PROVIDER.get(actorSystem).props(actorName),tempName);
-            routes.add("/user/"+tempName);
+        for (int i = 0; i < 100; i++) {
+            String tempName = actorName + i;
+            actorSystem.actorOf(SPRING_EXTENSION_PROVIDER.get(actorSystem).props(actorName), tempName);
+            routes.add("/user/" + tempName);
         }
-        Set<String> userRole =new HashSet<>(Collections.singletonList("compute"));
-        Group group =  new AdaptiveLoadBalancingGroup(MixMetricsSelector.getInstance(),routes);
-        ClusterRouterGroupSettings routerSettings= new ClusterRouterGroupSettings(100000,routes,true,userRole);
+        Set<String> userRole = new HashSet<>(Collections.singletonList("compute"));
+        Group group = new AdaptiveLoadBalancingGroup(MixMetricsSelector.getInstance(), routes);
+        ClusterRouterGroupSettings routerSettings = new ClusterRouterGroupSettings(100000, routes, true, userRole);
         Props props = new ClusterRouterGroup(group,routerSettings).props();
         return actorSystem.actorOf(props,"stockDataParsingRouter");
     }
