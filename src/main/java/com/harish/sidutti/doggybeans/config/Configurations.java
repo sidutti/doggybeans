@@ -1,11 +1,18 @@
 package com.harish.sidutti.doggybeans.config;
 
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.Props;
+import akka.cluster.metrics.AdaptiveLoadBalancingGroup;
+import akka.cluster.metrics.MixMetricsSelector;
+import akka.cluster.routing.ClusterRouterGroup;
+import akka.cluster.routing.ClusterRouterGroupSettings;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
 import akka.http.javadsl.server.Route;
 import akka.management.cluster.bootstrap.ClusterBootstrap;
 import akka.management.javadsl.AkkaManagement;
+import akka.routing.Group;
 import akka.stream.Materializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +20,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.*;
 import java.util.concurrent.CompletionStage;
 
 import static akka.http.javadsl.server.Directives.*;
@@ -59,5 +67,40 @@ public class Configurations {
                 path("hello", () ->
                         get(() ->
                                 complete("<h1>Say hello to akka-http</h1>"))));
+    }
+    @Bean
+    public ActorRef stockDataParsingActorRef(ActorSystem actorSystem){
+        String actorName = "stockDataParsingActor";
+        return createRoutes(actorSystem, actorName);
+    }
+
+    @Bean
+    public ActorRef quoteMongoActorRef(ActorSystem actorSystem){
+        String actorName = "quoteMongoActor";
+        return createRoutes(actorSystem, actorName);
+    }
+    @Bean
+    public ActorRef stockMongoActorRef(ActorSystem actorSystem){
+        String actorName = "quoteMongoActor";
+        return createRoutes(actorSystem, actorName);
+    }
+    @Bean
+    public ActorRef statsMongoActorRef(ActorSystem actorSystem){
+        String actorName = "quoteMongoActor";
+        return createRoutes(actorSystem, actorName);
+    }
+
+    private ActorRef createRoutes(ActorSystem actorSystem, String actorName) {
+        List<String> routes = new ArrayList<>();
+        for (int i=0;i<100  ;i++ ) {
+            String tempName= actorName+i;
+            actorSystem.actorOf(SPRING_EXTENSION_PROVIDER.get(actorSystem).props(actorName),tempName);
+            routes.add("/user/"+tempName);
+        }
+        Set<String> userRole =new HashSet<>(Collections.singletonList("compute"));
+        Group group =  new AdaptiveLoadBalancingGroup(MixMetricsSelector.getInstance(),routes);
+        ClusterRouterGroupSettings routerSettings= new ClusterRouterGroupSettings(100000,routes,true,userRole);
+        Props props = new ClusterRouterGroup(group,routerSettings).props();
+        return actorSystem.actorOf(props,"stockDataParsingRouter");
     }
 }
