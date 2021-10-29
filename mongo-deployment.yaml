@@ -1,77 +1,75 @@
-kind: PersistentVolume
 apiVersion: v1
+kind: PersistentVolume
 metadata:
-  name: task-pv-volume
-  labels:
-    type: local
+  name: mongo-node-1-pv
 spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
   capacity:
-    storage: 1Gi
-  hostPath:
-    path: /data/mongo1
-    type: DirectoryOrCreate
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: sidutti2
+    path: "/mnt/ntfs"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-node-2-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: sidutti2
+    path: "/mnt/ntfs"
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-node-3-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: sidutti2
+    path: "/mnt/ntfs/"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mongo-pv-claim
-  labels:
-    app: mongopv
+  name: mongo-node-1-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: manual
+    - ReadWriteMany
+  storageClassName: ""
   resources:
     requests:
-      storage: 1Gi
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mongo
-  labels:
-    name: mongo
-    component: backend
-spec:
-  selector:
-    matchLabels:
-      name: mongo
-      component: backend
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        name: mongo
-        component: backend
-    spec:
-      containers:
-        - name: mongo
-          image: mongo:4.2
-          args:
-            - --bind_ip
-            - 0.0.0.0
-          ports:
-            - containerPort: 27017
-          volumeMounts:
-            - name: hostvol
-              mountPath: /data/db
-      volumes:
-        - name: hostvol
-          persistentVolumeClaim:
-            claimName: mongo-pv-claim
+      storage: 10Gi
 ---
 apiVersion: v1
-kind: Service
+kind: PersistentVolumeClaim
 metadata:
-  name: mongo-service
-  labels:
-    name: mongo-service
+  name: mongo-node-2-pvc
 spec:
-  ports:
-    - port: 27017
-      targetPort: 27017
-  selector:
-    name: mongo
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-node-3-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 10Gi
