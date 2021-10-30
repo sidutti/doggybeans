@@ -140,7 +140,7 @@ spec:
             - containerPort: 27017
           volumeMounts:
             - name: mongo-node-3-db
-              mountPath: /data/db/mongo/node3
+              mountPath: /data/db/
       volumes:
         - name: mongo-node-3-db
           persistentVolumeClaim:

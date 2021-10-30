@@ -5,7 +5,7 @@ metadata:
     app: doggybeans
   name: doggybeans
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: doggybeans
@@ -55,7 +55,7 @@ spec:
             - name: REQUIRED_CONTACT_POINT_NR
               value: "2"
             - name: MONGODB_HOST
-              value: mongo-service
+              value: mongo-node-1
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
