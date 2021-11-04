@@ -25,6 +25,7 @@ public class MongoReactiveConfiguration extends AbstractReactiveMongoConfigurati
     public MongoClient reactiveMongoClient() {
         return MongoClients.create("mongodb://" + mongoDB + ":27017/?minpoolsize=10&connecttimeoutms=6000000&sockettimeoutms=600000");
     }
+
     protected void configureClientSettings(MongoClientSettings.Builder builder) {
         builder.applicationName("sidutti");
         ConnectionString connectionString = new ConnectionString("mongodb://" + mongoDB + ":27017/?minpoolsize=10&connecttimeoutms=6000000&sockettimeoutms=600000");

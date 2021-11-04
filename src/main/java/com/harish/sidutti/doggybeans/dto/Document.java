@@ -29,7 +29,7 @@ public class Document {
     }
 
     public Map<String, String> getProperties() {
-        if(properties==null){
+        if (properties == null) {
             this.properties = new HashMap<>();
         }
         return properties;
@@ -46,6 +46,7 @@ public class Document {
     public void setOperation(Operation operation) {
         this.operation = operation;
     }
+
     public String getGuid() {
         return guid;
     }

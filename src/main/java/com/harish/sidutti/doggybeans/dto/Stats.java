@@ -1,43 +1,41 @@
-
 package com.harish.sidutti.doggybeans.dto;
 
 import yahoofinance.Utils;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 
 public class Stats {
-    
+
     private String symbol;
-    
+
     private BigDecimal marketCap;
     private Long sharesFloat;
     private Long sharesOutstanding;
     private Long sharesOwned;
-    
+
     private BigDecimal eps;
     private BigDecimal pe;
     private BigDecimal peg;
-    
+
     private BigDecimal epsEstimateCurrentYear;
     private BigDecimal epsEstimateNextQuarter;
     private BigDecimal epsEstimateNextYear;
-    
+
     private BigDecimal priceBook;
     private BigDecimal priceSales;
     private BigDecimal bookValuePerShare;
-    
+
     private BigDecimal revenue; // ttm
     private BigDecimal EBITDA; // ttm
     private BigDecimal oneYearTargetPrice;
-    
+
     private BigDecimal shortRatio;
 
     private String earningsAnnouncement;
-    
+
     public Stats() {
     }
-    
+
     public BigDecimal getROE() {
         return Utils.getPercent(this.EBITDA, this.marketCap);
     }
@@ -45,7 +43,11 @@ public class Stats {
     public String getSymbol() {
         return symbol;
     }
-    
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
     public BigDecimal getMarketCap() {
         return marketCap;
     }
@@ -188,9 +190,5 @@ public class Stats {
 
     public void setEarningsAnnouncement(String earningsAnnouncement) {
         this.earningsAnnouncement = earningsAnnouncement;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
     }
 }

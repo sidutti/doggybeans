@@ -19,8 +19,8 @@ public class HistoryMongoActor extends UntypedAbstractActor {
     }
 
     @Override
-    public void onReceive(Object message)  {
-        if(message instanceof History){
+    public void onReceive(Object message) {
+        if (message instanceof History) {
             Mono<History> updatable = historyRepository.save((History) message);
         }
     }

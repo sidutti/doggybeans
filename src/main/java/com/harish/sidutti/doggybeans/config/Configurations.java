@@ -68,14 +68,15 @@ public class Configurations {
                         get(() ->
                                 complete("<h1>Say hello to akka-http</h1>"))));
     }
+
     @Bean
-    public ActorRef stockDataParsingActorRef(ActorSystem actorSystem){
+    public ActorRef stockDataParsingActorRef(ActorSystem actorSystem) {
         String actorName = "stockDataParsingActor";
         return createRoutes(actorSystem, actorName);
     }
 
     @Bean
-    public ActorRef quoteMongoActorRef(ActorSystem actorSystem){
+    public ActorRef quoteMongoActorRef(ActorSystem actorSystem) {
         String actorName = "quoteMongoActor";
         return createRoutes(actorSystem, actorName);
     }
@@ -91,11 +92,13 @@ public class Configurations {
         String actorName = "statsMongoActor";
         return createRoutes(actorSystem, actorName);
     }
+
     @Bean
     public ActorRef historyMongoActorRef(ActorSystem actorSystem) {
         String actorName = "historyMongoActor";
         return createRoutes(actorSystem, actorName);
     }
+
     @Bean
     public ActorRef metadataActorRef(ActorSystem actorSystem) {
         String actorName = "metadataActor";
@@ -118,7 +121,7 @@ public class Configurations {
         Set<String> userRole = new HashSet<>(Collections.singletonList("compute"));
         Group group = new AdaptiveLoadBalancingGroup(MixMetricsSelector.getInstance(), routes);
         ClusterRouterGroupSettings routerSettings = new ClusterRouterGroupSettings(100000, routes, true, userRole);
-        Props props = new ClusterRouterGroup(group,routerSettings).props();
-        return actorSystem.actorOf(props,actorName+"Router");
+        Props props = new ClusterRouterGroup(group, routerSettings).props();
+        return actorSystem.actorOf(props, actorName + "Router");
     }
 }

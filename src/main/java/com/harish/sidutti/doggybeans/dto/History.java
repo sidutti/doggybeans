@@ -57,6 +57,7 @@ public class History {
     public void setLow(BigDecimal low) {
         this.low = low;
     }
+
     public BigDecimal getHigh() {
         return high;
     }
@@ -72,6 +73,7 @@ public class History {
     public void setClose(BigDecimal close) {
         this.close = close;
     }
+
     public BigDecimal getAdjClose() {
         return adjClose;
     }

@@ -18,7 +18,7 @@ public class Requests {
     }
 
     public List<Document> getDocumentsList() {
-        if(documentList==null){
+        if (documentList == null) {
             documentList = new ArrayList<>();
         }
         return documentList;

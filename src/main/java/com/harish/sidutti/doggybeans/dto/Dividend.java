@@ -1,4 +1,3 @@
-
 package com.harish.sidutti.doggybeans.dto;
 
 import java.math.BigDecimal;

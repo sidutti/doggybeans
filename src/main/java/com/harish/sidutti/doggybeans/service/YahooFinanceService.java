@@ -52,7 +52,7 @@ public class YahooFinanceService {
         BeanUtils.copyProperties(yahooQuote, localQuote);
         localQuote.setSymbol(symbol);
         StockAndQuote result = new StockAndQuote();
-        com.harish.sidutti.doggybeans.dto.Stock stocklocal= new com.harish.sidutti.doggybeans.dto.Stock();
+        com.harish.sidutti.doggybeans.dto.Stock stocklocal = new com.harish.sidutti.doggybeans.dto.Stock();
         result.setQuote(localQuote);
         result.setStats(stats);
         stocklocal.setCurrency(stock.getCurrency());

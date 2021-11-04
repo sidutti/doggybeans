@@ -26,7 +26,7 @@ public class StockDataParsingActor extends UntypedAbstractActor {
         if (message instanceof String) {
             String messageLine = (String) message;
             History history = processMessageLine(messageLine);
-            historyMongoActorRef.tell(history,self());
+            historyMongoActorRef.tell(history, self());
         } else {
             unhandled(message);
         }

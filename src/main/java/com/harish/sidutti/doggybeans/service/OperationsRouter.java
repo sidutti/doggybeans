@@ -16,12 +16,12 @@ public class OperationsRouter {
     }
 
     public Document process(Document document) {
-            return crudServices
-                    .stream()
-                    .filter(crudService -> crudService.canI(document.getOperation()))
-                    .findFirst()
-                    .get()
-                    .process(document);
+        return crudServices
+                .stream()
+                .filter(crudService -> crudService.canI(document.getOperation()))
+                .findFirst()
+                .get()
+                .process(document);
 
     }
 }

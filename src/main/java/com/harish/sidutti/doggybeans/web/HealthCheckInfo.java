@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 public class HealthCheckInfo implements Supplier<CompletionStage<Boolean>> {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final ActorSystem system;
+
     public HealthCheckInfo(ActorSystem system) {
         log.info("Somethings are happening");
         this.system = system;

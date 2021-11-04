@@ -15,6 +15,7 @@ public class MetadataActor extends UntypedAbstractActor {
     private final ActorRef statsMongoActorRef;
     private final ActorRef quoteMongoActorRef;
     private final ActorRef stockMongoActorRef;
+
     public MetadataActor(YahooFinanceService yahooFinanceService, ActorRef statsMongoActorRef, ActorRef quoteMongoActorRef, ActorRef stockMongoActorRef) {
         this.yahooFinanceService = yahooFinanceService;
         this.statsMongoActorRef = statsMongoActorRef;
@@ -27,9 +28,9 @@ public class MetadataActor extends UntypedAbstractActor {
         if (message instanceof String) {
             String value = (String) message;
             StockAndQuote stockAndQuote = yahooFinanceService.processStockData(value.split(" ")[0]);
-            statsMongoActorRef.tell(stockAndQuote.getStats(),self());
-            quoteMongoActorRef.tell(stockAndQuote.getQuote(),self());
-            stockMongoActorRef.tell(stockAndQuote.getStock(),self());
+            statsMongoActorRef.tell(stockAndQuote.getStats(), self());
+            quoteMongoActorRef.tell(stockAndQuote.getQuote(), self());
+            stockMongoActorRef.tell(stockAndQuote.getStock(), self());
         }
     }
 }
