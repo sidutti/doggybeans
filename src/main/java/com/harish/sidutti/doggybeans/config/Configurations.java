@@ -119,6 +119,6 @@ public class Configurations {
         Group group = new AdaptiveLoadBalancingGroup(MixMetricsSelector.getInstance(), routes);
         ClusterRouterGroupSettings routerSettings = new ClusterRouterGroupSettings(100000, routes, true, userRole);
         Props props = new ClusterRouterGroup(group,routerSettings).props();
-        return actorSystem.actorOf(props,"stockDataParsingRouter");
+        return actorSystem.actorOf(props,actorName+"Router");
     }
 }

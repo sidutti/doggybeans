@@ -14,10 +14,12 @@ public class MetadataActor extends UntypedAbstractActor {
     private final YahooFinanceService yahooFinanceService;
     private final ActorRef statsMongoActorRef;
     private final ActorRef quoteMongoActorRef;
-    public MetadataActor(YahooFinanceService yahooFinanceService, ActorRef statsMongoActorRef, ActorRef quoteMongoActorRef) {
+    private final ActorRef stockMongoActorRef;
+    public MetadataActor(YahooFinanceService yahooFinanceService, ActorRef statsMongoActorRef, ActorRef quoteMongoActorRef, ActorRef stockMongoActorRef) {
         this.yahooFinanceService = yahooFinanceService;
         this.statsMongoActorRef = statsMongoActorRef;
         this.quoteMongoActorRef = quoteMongoActorRef;
+        this.stockMongoActorRef = stockMongoActorRef;
     }
 
     @Override
@@ -27,6 +29,7 @@ public class MetadataActor extends UntypedAbstractActor {
             StockAndQuote stockAndQuote = yahooFinanceService.processStockData(value.split(" ")[0]);
             statsMongoActorRef.tell(stockAndQuote.getStats(),self());
             quoteMongoActorRef.tell(stockAndQuote.getQuote(),self());
+            stockMongoActorRef.tell(stockAndQuote.getStock(),self());
         }
     }
 }
