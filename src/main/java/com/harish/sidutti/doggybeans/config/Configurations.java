@@ -82,13 +82,13 @@ public class Configurations {
 
     @Bean
     public ActorRef stockMongoActorRef(ActorSystem actorSystem) {
-        String actorName = "quoteMongoActor";
+        String actorName = "stockMongoActor";
         return createRoutes(actorSystem, actorName);
     }
 
     @Bean
     public ActorRef statsMongoActorRef(ActorSystem actorSystem) {
-        String actorName = "quoteMongoActor";
+        String actorName = "statsMongoActor";
         return createRoutes(actorSystem, actorName);
     }
 
