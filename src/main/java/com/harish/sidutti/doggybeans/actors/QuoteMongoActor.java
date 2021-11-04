@@ -19,8 +19,8 @@ public class QuoteMongoActor extends UntypedAbstractActor {
     }
 
     @Override
-    public void onReceive(Object message)  {
-        if(message instanceof Quote){
+    public void onReceive(Object message) {
+        if (message instanceof Quote) {
             Mono<Quote> updatable = quoteRepository.save((Quote) message);
         }
     }

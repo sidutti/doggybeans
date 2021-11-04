@@ -2,7 +2,9 @@ package com.harish.sidutti.doggybeans.service;
 
 
 import akka.actor.ActorRef;
+import com.harish.sidutti.doggybeans.dto.Quote;
 import com.harish.sidutti.doggybeans.dto.Stats;
+import com.harish.sidutti.doggybeans.dto.StockAndQuote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -32,27 +34,32 @@ import java.util.Map;
 public class YahooFinanceService {
     private static final Logger log = LoggerFactory.getLogger(HistQuotesRequest.class);
     private final ActorRef stockDataParsingActorRef;
-    private final ActorRef statsMongoActorRef;
-    private final ActorRef stockMongoActorRef;
 
-    public YahooFinanceService(ActorRef stockDataParsingActorRef, ActorRef statsMongoActorRef, ActorRef stockMongoActorRef) {
+
+    public YahooFinanceService(ActorRef stockDataParsingActorRef) {
         this.stockDataParsingActorRef = stockDataParsingActorRef;
-        this.statsMongoActorRef = statsMongoActorRef;
-        this.stockMongoActorRef = stockMongoActorRef;
     }
 
-    public void processStockData(String symbol) {
+    public StockAndQuote processStockData(String symbol) {
         Stock stock = new Stock(symbol);
+
         StockStats yahooStats = stock.getStats();
         Stats stats = new Stats();
         BeanUtils.copyProperties(yahooStats, stats);
         stats.setSymbol(symbol);
         StockQuote yahooQuote = stock.getQuote();
-        com.harish.sidutti.doggybeans.dto.Stock localStock = new com.harish.sidutti.doggybeans.dto.Stock();
-        BeanUtils.copyProperties(yahooQuote, localStock);
-        localStock.setSymbol(symbol);
-        statsMongoActorRef.tell(stats, null);
-        stockMongoActorRef.tell(localStock, null);
+        Quote localQuote = new Quote();
+        BeanUtils.copyProperties(yahooQuote, localQuote);
+        localQuote.setSymbol(symbol);
+        StockAndQuote result = new StockAndQuote();
+        com.harish.sidutti.doggybeans.dto.Stock stocklocal= new com.harish.sidutti.doggybeans.dto.Stock();
+        result.setQuote(localQuote);
+        result.setStats(stats);
+        stocklocal.setCurrency(stock.getCurrency());
+        stocklocal.setName(stock.getName());
+        stocklocal.setStockExchange(stock.getStockExchange());
+        result.setStock(stocklocal);
+        return result;
     }
 
     public void processHistoricalResult(String symbol, Calendar from, Calendar to, Interval interval) {

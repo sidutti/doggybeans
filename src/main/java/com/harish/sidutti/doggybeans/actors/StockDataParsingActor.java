@@ -2,7 +2,7 @@ package com.harish.sidutti.doggybeans.actors;
 
 import akka.actor.ActorRef;
 import akka.actor.UntypedAbstractActor;
-import com.harish.sidutti.doggybeans.dto.Quote;
+import com.harish.sidutti.doggybeans.dto.History;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -15,28 +15,28 @@ import yahoofinance.YahooFinance;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class StockDataParsingActor extends UntypedAbstractActor {
     private static final Logger LOGGER = LoggerFactory.getLogger("StockDataParsingActor");
-    private final ActorRef quoteMongoActorRef;
+    private final ActorRef historyMongoActorRef;
 
-    public StockDataParsingActor(ActorRef quoteMongoActorRef) {
-        this.quoteMongoActorRef = quoteMongoActorRef;
+    public StockDataParsingActor(ActorRef historyMongoActorRef) {
+        this.historyMongoActorRef = historyMongoActorRef;
     }
 
     @Override
     public void onReceive(Object message) {
         if (message instanceof String) {
             String messageLine = (String) message;
-            Quote quote = processMessageLine(messageLine);
-            quoteMongoActorRef.tell(quote,self());
+            History history = processMessageLine(messageLine);
+            historyMongoActorRef.tell(history,self());
         } else {
             unhandled(message);
         }
 
     }
 
-    private Quote processMessageLine(String line) {
+    private History processMessageLine(String line) {
         try {
             String[] data = line.split(YahooFinance.QUOTES_CSV_DELIMITER);
-            return new Quote(data[7],
+            return new History(data[7],
                     data[0],
                     Utils.getBigDecimal(data[1]),
                     Utils.getBigDecimal(data[3]),

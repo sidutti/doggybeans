@@ -91,7 +91,11 @@ public class Configurations {
         String actorName = "statsMongoActor";
         return createRoutes(actorSystem, actorName);
     }
-
+    @Bean
+    public ActorRef historyMongoActorRef(ActorSystem actorSystem) {
+        String actorName = "historyMongoActor";
+        return createRoutes(actorSystem, actorName);
+    }
     @Bean
     public ActorRef metadataActorRef(ActorSystem actorSystem) {
         String actorName = "metadataActor";
