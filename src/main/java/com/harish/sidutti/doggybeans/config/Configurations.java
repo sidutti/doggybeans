@@ -104,7 +104,7 @@ public class Configurations {
 
     @Bean
     public ActorRef historyProcessActorRef(ActorSystem actorSystem) {
-        String actorName = "historyProcess";
+        String actorName = "historyProcessActor";
         return createRoutes(actorSystem, actorName);
     }
 
