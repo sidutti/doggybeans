@@ -47,4 +47,15 @@ public class StockAndQuote {
     public void setDividend(Dividend dividend) {
         this.dividend = dividend;
     }
+
+    @Override
+    public String toString() {
+        return "StockAndQuote{" +
+                "quote=" + quote +
+                ", history=" + history +
+                ", stats=" + stats +
+                ", dividend=" + dividend +
+                ", stock=" + stock +
+                '}';
+    }
 }

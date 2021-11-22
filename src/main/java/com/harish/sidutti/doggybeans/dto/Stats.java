@@ -191,4 +191,29 @@ public class Stats {
     public void setEarningsAnnouncement(String earningsAnnouncement) {
         this.earningsAnnouncement = earningsAnnouncement;
     }
+
+    @Override
+    public String toString() {
+        return "Stats{" +
+                "symbol='" + symbol + '\'' +
+                ", marketCap=" + marketCap +
+                ", sharesFloat=" + sharesFloat +
+                ", sharesOutstanding=" + sharesOutstanding +
+                ", sharesOwned=" + sharesOwned +
+                ", eps=" + eps +
+                ", pe=" + pe +
+                ", peg=" + peg +
+                ", epsEstimateCurrentYear=" + epsEstimateCurrentYear +
+                ", epsEstimateNextQuarter=" + epsEstimateNextQuarter +
+                ", epsEstimateNextYear=" + epsEstimateNextYear +
+                ", priceBook=" + priceBook +
+                ", priceSales=" + priceSales +
+                ", bookValuePerShare=" + bookValuePerShare +
+                ", revenue=" + revenue +
+                ", EBITDA=" + EBITDA +
+                ", oneYearTargetPrice=" + oneYearTargetPrice +
+                ", shortRatio=" + shortRatio +
+                ", earningsAnnouncement='" + earningsAnnouncement + '\'' +
+                '}';
+    }
 }

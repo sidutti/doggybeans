@@ -32,7 +32,7 @@ import java.util.Map;
 
 @Component
 public class YahooFinanceService {
-    private static final Logger log = LoggerFactory.getLogger(HistQuotesRequest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HistQuotesRequest.class);
     private final ActorRef stockDataParsingActorRef;
 
 
@@ -41,25 +41,30 @@ public class YahooFinanceService {
     }
 
     public StockAndQuote processStockData(String symbol) {
-        Stock stock = new Stock(symbol);
+        try {
+            Stock stock = new Stock(symbol);
 
-        StockStats yahooStats = stock.getStats();
-        Stats stats = new Stats();
-        BeanUtils.copyProperties(yahooStats, stats);
-        stats.setSymbol(symbol);
-        StockQuote yahooQuote = stock.getQuote();
-        Quote localQuote = new Quote();
-        BeanUtils.copyProperties(yahooQuote, localQuote);
-        localQuote.setSymbol(symbol);
-        StockAndQuote result = new StockAndQuote();
-        com.harish.sidutti.doggybeans.dto.Stock stocklocal = new com.harish.sidutti.doggybeans.dto.Stock();
-        result.setQuote(localQuote);
-        result.setStats(stats);
-        stocklocal.setCurrency(stock.getCurrency());
-        stocklocal.setName(stock.getName());
-        stocklocal.setStockExchange(stock.getStockExchange());
-        result.setStock(stocklocal);
-        return result;
+            StockStats yahooStats = stock.getStats();
+            Stats stats = new Stats();
+            BeanUtils.copyProperties(yahooStats, stats);
+            stats.setSymbol(symbol);
+            StockQuote yahooQuote = stock.getQuote();
+            Quote localQuote = new Quote();
+            BeanUtils.copyProperties(yahooQuote, localQuote);
+            localQuote.setSymbol(symbol);
+            StockAndQuote result = new StockAndQuote();
+            com.harish.sidutti.doggybeans.dto.Stock stocklocal = new com.harish.sidutti.doggybeans.dto.Stock();
+            result.setQuote(localQuote);
+            result.setStats(stats);
+            stocklocal.setCurrency(stock.getCurrency());
+            stocklocal.setName(stock.getName());
+            stocklocal.setStockExchange(stock.getStockExchange());
+            result.setStock(stocklocal);
+            return result;
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return new StockAndQuote();
     }
 
     public void processHistoricalResult(String symbol, Calendar from, Calendar to, Interval interval) {
@@ -74,7 +79,7 @@ public class YahooFinanceService {
 
 
             // Get CSV from Yahoo
-            log.info("Sending request: " + url);
+            LOGGER.info("Sending request: " + url);
 
             URL request = new URL(url);
             RedirectableRequest redirectableRequest = new RedirectableRequest(request, 15);
@@ -91,7 +96,7 @@ public class YahooFinanceService {
                 }
             }
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 }

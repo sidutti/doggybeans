@@ -24,6 +24,7 @@ public class StockDataParsingActor extends UntypedAbstractActor {
     @Override
     public void onReceive(Object message) {
         if (message instanceof String) {
+            LOGGER.info("Message received on StockData text={}", message);
             String messageLine = (String) message;
             History history = processMessageLine(messageLine);
             historyMongoActorRef.tell(history, self());

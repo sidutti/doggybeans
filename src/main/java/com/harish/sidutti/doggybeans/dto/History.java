@@ -89,4 +89,18 @@ public class History {
     public void setVolume(Long volume) {
         this.volume = volume;
     }
+
+    @Override
+    public String toString() {
+        return "History{" +
+                "symbol='" + symbol + '\'' +
+                ", date='" + date + '\'' +
+                ", open=" + open +
+                ", low=" + low +
+                ", high=" + high +
+                ", close=" + close +
+                ", adjClose=" + adjClose +
+                ", volume=" + volume +
+                '}';
+    }
 }

@@ -298,6 +298,31 @@ public class Quote {
         this.avgVolume = avgVolume;
     }
 
-
+    @Override
+    public String toString() {
+        return "Quote{" +
+                "symbol='" + symbol + '\'' +
+                ", timeZone=" + timeZone +
+                ", ask=" + ask +
+                ", askSize=" + askSize +
+                ", bid=" + bid +
+                ", bidSize=" + bidSize +
+                ", price=" + price +
+                ", lastTradeSize=" + lastTradeSize +
+                ", lastTradeDateStr='" + lastTradeDateStr + '\'' +
+                ", lastTradeTimeStr='" + lastTradeTimeStr + '\'' +
+                ", lastTradeTime='" + lastTradeTime + '\'' +
+                ", open=" + open +
+                ", previousClose=" + previousClose +
+                ", dayLow=" + dayLow +
+                ", dayHigh=" + dayHigh +
+                ", yearLow=" + yearLow +
+                ", yearHigh=" + yearHigh +
+                ", priceAvg50=" + priceAvg50 +
+                ", priceAvg200=" + priceAvg200 +
+                ", volume=" + volume +
+                ", avgVolume=" + avgVolume +
+                '}';
+    }
 }
 

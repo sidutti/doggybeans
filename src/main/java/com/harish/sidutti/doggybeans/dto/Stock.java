@@ -37,4 +37,14 @@ public class Stock {
     public void setStockExchange(String stockExchange) {
         this.stockExchange = stockExchange;
     }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "symbol='" + symbol + '\'' +
+                ", name='" + name + '\'' +
+                ", currency='" + currency + '\'' +
+                ", stockExchange='" + stockExchange + '\'' +
+                '}';
+    }
 }
