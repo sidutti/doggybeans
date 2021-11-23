@@ -1,6 +1,6 @@
 package com.harish.sidutti.doggybeans.dto;
 
-public class StockAndQuote {
+public class StockAndQuote implements JacksonSerializable {
 
     private Quote quote;
     private History history;

@@ -4,7 +4,7 @@ import yahoofinance.Utils;
 
 import java.math.BigDecimal;
 
-public class Stats {
+public class Stats implements JacksonSerializable {
 
     private String symbol;
 

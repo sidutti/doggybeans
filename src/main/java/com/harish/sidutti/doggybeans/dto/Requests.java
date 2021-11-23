@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Requests {
+public class Requests implements JacksonSerializable {
 
     private String guid = UUID.randomUUID().toString();
     private List<Document> documentList;

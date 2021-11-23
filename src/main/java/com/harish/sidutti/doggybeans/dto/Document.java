@@ -3,7 +3,7 @@ package com.harish.sidutti.doggybeans.dto;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Document {
+public class Document implements JacksonSerializable {
 
     private String guid;
     private String docId;

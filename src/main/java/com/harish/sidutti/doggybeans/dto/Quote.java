@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class Quote {
+public class Quote implements JacksonSerializable {
 
     private String symbol;
     private TimeZone timeZone;

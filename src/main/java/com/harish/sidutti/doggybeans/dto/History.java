@@ -2,7 +2,7 @@ package com.harish.sidutti.doggybeans.dto;
 
 import java.math.BigDecimal;
 
-public class History {
+public class History implements JacksonSerializable {
     private String symbol;
     private String date;
     private BigDecimal open;

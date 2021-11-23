@@ -1,6 +1,6 @@
 package com.harish.sidutti.doggybeans.dto;
 
-public class Stock {
+public class Stock implements JacksonSerializable {
     private String symbol;
     private String name;
     private String currency;

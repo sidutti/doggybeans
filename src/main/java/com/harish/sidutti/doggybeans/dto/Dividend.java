@@ -2,7 +2,7 @@ package com.harish.sidutti.doggybeans.dto;
 
 import java.math.BigDecimal;
 
-public class Dividend {
+public class Dividend implements JacksonSerializable {
 
     private final String symbol;
 
