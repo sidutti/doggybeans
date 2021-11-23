@@ -31,7 +31,7 @@ public class MetadataActor extends UntypedAbstractActor {
         LOGGER.info("Message Received on MetadataActor text={}", message);
         if (message instanceof String) {
             String value = (String) message;
-            StockAndQuote stockAndQuote = yahooFinanceService.processStockData(value.split(" ")[0]);
+            StockAndQuote stockAndQuote = yahooFinanceService.processStockData(value.split("\t")[0]);
             statsMongoActorRef.tell(stockAndQuote.getStats(), self());
             quoteMongoActorRef.tell(stockAndQuote.getQuote(), self());
             stockMongoActorRef.tell(stockAndQuote.getStock(), self());

@@ -14,7 +14,7 @@ import java.util.Calendar;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class HistoryProcessActor extends UntypedAbstractActor {
-    private static final Logger LOGGER = LoggerFactory.getLogger("StockDataParsingActor");
+    private static final Logger LOGGER = LoggerFactory.getLogger(HistoryProcessActor.class);
     private final YahooFinanceService yahooFinanceService;
 
     public HistoryProcessActor(YahooFinanceService yahooFinanceService) {
@@ -28,7 +28,7 @@ public class HistoryProcessActor extends UntypedAbstractActor {
             String value = (String) message;
             Calendar from = Calendar.getInstance();
             from.add(Calendar.YEAR, -10);
-            yahooFinanceService.processHistoricalResult(value.split(" ")[0], from, Calendar.getInstance(), Interval.DAILY);
+            yahooFinanceService.processHistoricalResult(value.split("\t")[0], from, Calendar.getInstance(), Interval.DAILY);
         }
     }
 }

@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("load")
@@ -28,16 +26,18 @@ public class Load {
     }
 
     @GetMapping(value = "file/{fileName:.+}")
-    public List<String> loadNYSE(@PathVariable String fileName) throws IOException {
-
+    public void loadNYSE(@PathVariable String fileName) throws IOException {
+        LOGGER.info("Loading file={}", fileName);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource(fileName).getInputStream()))) {
-            return reader.lines()
-                    .peek(str -> metadataActorRef.tell(str, null))
-                    .peek(str -> historyProcessActorRef.tell(str, null))
-                    .collect(Collectors.toList());
+            reader.lines()
+                    .forEach(str -> {
+                        metadataActorRef.tell(str, null);
+                        historyProcessActorRef.tell(str, null);
+                        LOGGER.info(str);
+                    });
+
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            return List.of(e.getMessage());
         }
     }
 }
