@@ -77,7 +77,7 @@ public class YahooFinanceService {
 
             String url = YahooFinance.HISTQUOTES2_BASE_URL + URLEncoder.encode(symbol, StandardCharsets.UTF_8) + "?" + Utils.getURLParameters(params);
 
-
+            url=url.replace("\u0026", "&");
             // Get CSV from Yahoo
             LOGGER.info("Sending request: " + url);
 
