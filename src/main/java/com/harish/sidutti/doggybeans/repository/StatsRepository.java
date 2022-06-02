@@ -1,9 +1,9 @@
 package com.harish.sidutti.doggybeans.repository;
 
-import com.harish.sidutti.doggybeans.dto.Stats;
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import com.harish.sidutti.quotes.stock.StockStats;
+import org.springframework.data.elasticsearch.repository.ReactiveElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StatsRepository extends ReactiveMongoRepository<Stats, String> {
+public interface StatsRepository extends ReactiveElasticsearchRepository<StockStats, String> {
 }

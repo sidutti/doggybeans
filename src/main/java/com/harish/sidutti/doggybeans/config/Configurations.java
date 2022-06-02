@@ -70,44 +70,56 @@ public class Configurations {
     }
 
     @Bean
-    public ActorRef stockDataParsingActorRef(ActorSystem actorSystem) {
-        String actorName = "stockDataParsingActor";
+    public ActorRef dbActorRef(ActorSystem actorSystem) {
+        String actorName = "dBActor";
         return createRoutes(actorSystem, actorName);
     }
 
     @Bean
-    public ActorRef quoteMongoActorRef(ActorSystem actorSystem) {
-        String actorName = "quoteMongoActor";
+    public ActorRef historicalQuoteActorRef(ActorSystem actorSystem) {
+        String actorName = "historicalQuoteActor";
         return createRoutes(actorSystem, actorName);
     }
 
     @Bean
-    public ActorRef stockMongoActorRef(ActorSystem actorSystem) {
-        String actorName = "stockMongoActor";
+    public ActorRef stockActorRef(ActorSystem actorSystem) {
+        String actorName = "stockActor";
         return createRoutes(actorSystem, actorName);
     }
 
     @Bean
-    public ActorRef statsMongoActorRef(ActorSystem actorSystem) {
-        String actorName = "statsMongoActor";
+    public ActorRef stockDividendActorRef(ActorSystem actorSystem) {
+        String actorName = "stockDividendActor";
         return createRoutes(actorSystem, actorName);
     }
 
     @Bean
-    public ActorRef historyMongoActorRef(ActorSystem actorSystem) {
-        String actorName = "historyMongoActor";
+    public ActorRef stockQuoteActorRef(ActorSystem actorSystem) {
+        String actorName = "stockQuoteActor";
         return createRoutes(actorSystem, actorName);
     }
 
     @Bean
-    public ActorRef metadataActorRef(ActorSystem actorSystem) {
-        String actorName = "metadataActor";
+    public ActorRef stockStatActorRef(ActorSystem actorSystem) {
+        String actorName = "stockStatActor";
         return createRoutes(actorSystem, actorName);
     }
 
     @Bean
-    public ActorRef historyProcessActorRef(ActorSystem actorSystem) {
-        String actorName = "historyProcessActor";
+    public ActorRef indexHistoryActorRef(ActorSystem actorSystem) {
+        String actorName = "indexHistoryActor";
+        return createRoutes(actorSystem, actorName);
+    }
+
+    @Bean
+    public ActorRef indexListActorRef(ActorSystem actorSystem) {
+        String actorName = "indexListActor";
+        return createRoutes(actorSystem, actorName);
+    }
+
+    @Bean
+    public ActorRef indexMonthActorRef(ActorSystem actorSystem) {
+        String actorName = "indexMonthActor";
         return createRoutes(actorSystem, actorName);
     }
 
