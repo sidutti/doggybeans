@@ -38,7 +38,7 @@ public class Configurations {
 
     @Bean
     public ActorSystem actorSystem(ApplicationContext applicationContext) {
-        ActorSystem system = ActorSystem.create("com/harish/sidutti/doggybeans");
+        ActorSystem system = ActorSystem.create("doggybeans");
         SpringExtension.SPRING_EXTENSION_PROVIDER.get(system).initialize(applicationContext);
         AkkaManagement.get(system).start();
         log.info("actor system and management initiated");
