@@ -1,5 +1,5 @@
 FROM openjdk:11-jdk
-ARG JAR_FILE=target/*.jar
+ARG JAR_FILE=Sgt-Sid/target/*.jar
 ENV PORT 8080
 ENV PORT 8558
 ENV PORT 2552
