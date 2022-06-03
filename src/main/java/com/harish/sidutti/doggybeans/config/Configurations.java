@@ -75,11 +75,6 @@ public class Configurations {
         return createRoutes(actorSystem, actorName);
     }
 
-    @Bean
-    public ActorRef historicalQuoteActorRef(ActorSystem actorSystem) {
-        String actorName = "historicalQuoteActor";
-        return createRoutes(actorSystem, actorName);
-    }
 
     @Bean
     public ActorRef stockActorRef(ActorSystem actorSystem) {
