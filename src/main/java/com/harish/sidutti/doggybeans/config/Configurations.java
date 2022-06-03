@@ -71,7 +71,7 @@ public class Configurations {
 
     @Bean
     public ActorRef dbActorRef(ActorSystem actorSystem) {
-        String actorName = "dBActor";
+        String actorName = "dbActor";
         return createRoutes(actorSystem, actorName);
     }
 

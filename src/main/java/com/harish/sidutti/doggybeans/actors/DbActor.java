@@ -16,15 +16,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class DBActor extends AbstractActor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DBActor.class);
+public class DbActor extends AbstractActor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DbActor.class);
     private final DividendRepository dividendRepository;
     private final HistoryRepository historyRepository;
     private final QuoteRepository quoteRepository;
     private final StatsRepository statsRepository;
     private final StockRepository stockRepository;
 
-    public DBActor(DividendRepository dividendRepository, HistoryRepository historyRepository, QuoteRepository quoteRepository, StatsRepository statsRepository, StockRepository stockRepository) {
+    public DbActor(DividendRepository dividendRepository, HistoryRepository historyRepository, QuoteRepository quoteRepository, StatsRepository statsRepository, StockRepository stockRepository) {
         this.dividendRepository = dividendRepository;
         this.historyRepository = historyRepository;
         this.quoteRepository = quoteRepository;
