@@ -25,7 +25,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Document(indexName = "stock")
-public class Stock {
+public class Stock implements JacksonSerializable{
 
     private static final Logger log = LoggerFactory.getLogger(Stock.class);
 
