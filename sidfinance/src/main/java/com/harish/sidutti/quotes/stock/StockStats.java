@@ -12,7 +12,7 @@ import java.util.Calendar;
 public class StockStats implements JacksonSerializable {
 
     @Id
-    private final String symbol;
+    private String symbol;
 
     private BigDecimal marketCap;
     private Long sharesFloat;
@@ -38,6 +38,9 @@ public class StockStats implements JacksonSerializable {
     private BigDecimal shortRatio;
 
     private Calendar earningsAnnouncement;
+
+    public StockStats() {
+    }
 
     public StockStats(String symbol) {
         this.symbol = symbol;

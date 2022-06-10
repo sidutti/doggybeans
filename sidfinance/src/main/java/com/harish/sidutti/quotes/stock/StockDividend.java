@@ -11,12 +11,15 @@ import java.util.Calendar;
 public class StockDividend implements JacksonSerializable {
 
     @Id
-    private final String symbol;
+    private String symbol;
 
     private Calendar payDate;
     private Calendar exDate;
     private BigDecimal annualYield;
     private BigDecimal annualYieldPercent;
+
+    public StockDividend() {
+    }
 
     public StockDividend(String symbol) {
         this.symbol = symbol;

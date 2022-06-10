@@ -18,7 +18,7 @@ import java.util.TimeZone;
 public class StockQuote implements JacksonSerializable {
 
     @Id
-    private final String symbol;
+    private String symbol;
 
     private TimeZone timeZone;
 
@@ -45,7 +45,9 @@ public class StockQuote implements JacksonSerializable {
 
     private Long volume;
     private Long avgVolume;
+    public StockQuote(){
 
+    }
     public StockQuote(String symbol) {
         this.symbol = symbol;
     }
