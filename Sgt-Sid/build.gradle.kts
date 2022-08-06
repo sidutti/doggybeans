@@ -1,8 +1,10 @@
 
 plugins {
-    id ("org.springframework.boot").version("2.7.0")
-    id ("io.spring.dependency-management"). version ("1.0.11.RELEASE")
+    id ("org.springframework.boot").version("3.0.0-M4")
+    id ("io.spring.dependency-management"). version ("1.0.12.RELEASE")
     id ("java")
+    kotlin("jvm") version "1.7.10"
+    kotlin("plugin.spring") version "1.7.10"
 }
 apply {
     plugin("java")
@@ -10,13 +12,16 @@ apply {
 }
 repositories {
     mavenCentral()
+    maven { url = uri("https://repo.spring.io/milestone") }
+
 }
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
     implementation(project(":sidfinance"))
-    implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch:2.7.0")
-    implementation("org.springframework.boot:spring-boot-starter-webflux:2.7.0")
-    implementation("org.springframework.boot:spring-boot-starter-actuator:2.7.0")
+    implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("com.typesafe.akka:akka-http_2.13:10.2.9")
     implementation("com.typesafe.akka:akka-serialization-jackson_2.13:2.6.19")
     implementation("com.typesafe.akka:akka-actor_2.13:2.6.19")
@@ -33,8 +38,8 @@ dependencies {
     implementation("com.lightbend.akka.management:akka-management-cluster-bootstrap_2.13:1.1.3")
     implementation("com.lightbend.akka.discovery:akka-discovery-kubernetes-api_2.13:1.1.3")
     implementation("com.lightbend.akka.management:akka-management-cluster-http_2.13:1.1.3")
-    runtimeOnly("org.springframework.boot:spring-boot-devtools:2.7.0")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:2.7.0")
+    runtimeOnly("org.springframework.boot:spring-boot-devtools")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test:3.4.18")
 }
 

@@ -1,19 +1,21 @@
-
 plugins {
-    //id ("org.springframework.boot").version("2.7.0")
-    //id ("io.spring.dependency-management"). version ("1.0.11.RELEASE")
-    id ("java")
+
+    id("java")
+
 }
 apply {
     plugin("java")
-
 }
 repositories {
     mavenCentral()
+    maven { url = uri("https://repo.spring.io/milestone") }
+
 }
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch:2.7.0")
+    implementation("org.apache.httpcomponents:httpclient:4.5.13")
+    implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch:2.7.2")
     implementation("org.slf4j:slf4j-api:1.7.36")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
     testImplementation("org.slf4j:slf4j-simple:1.7.36")
