@@ -1,11 +1,8 @@
-package com.harish.sidutti.doggybeans.actors;
+package com.harish.sidutti.doggybeans.service;
 
 import akka.actor.ActorRef;
-import akka.actor.UntypedAbstractActor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -13,16 +10,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 @Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class IndexListActor extends UntypedAbstractActor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(IndexListActor.class);
+public class IndexListService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(IndexListService.class);
     private final ActorRef indexHistoryActorRef;
     private final ActorRef stockActorRef;
     private final ActorRef stockDividendActorRef;
     private final ActorRef stockQuoteActorRef;
     private final ActorRef stockStatActorRef;
 
-    public IndexListActor(ActorRef indexHistoryActorRef, ActorRef stockActorRef, ActorRef stockDividendActorRef, ActorRef stockQuoteActorRef, ActorRef stockStatActorRef) {
+    public IndexListService(ActorRef indexHistoryActorRef, ActorRef stockActorRef, ActorRef stockDividendActorRef, ActorRef stockQuoteActorRef, ActorRef stockStatActorRef) {
         this.indexHistoryActorRef = indexHistoryActorRef;
         this.stockActorRef = stockActorRef;
         this.stockDividendActorRef = stockDividendActorRef;

@@ -1,40 +1,37 @@
-package com.harish.sidutti.doggybeans.actors;
+package com.harish.sidutti.doggybeans.service;
 
-import akka.actor.ActorRef;
-import akka.actor.UntypedAbstractActor;
 import com.harish.sidutti.doggybeans.dto.StockWithInterval;
+import com.harish.sidutti.histquotes.HistoricalQuote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.util.Calendar;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class IndexHistoryActor extends UntypedAbstractActor {
+public class MonthlyHistoryService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IndexHistoryActor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MonthlyHistoryService.class);
 
-    private final ActorRef indexMonthActorRef;
+    private final IndexMonthService indexMonthService;
 
-    public IndexHistoryActor(ActorRef indexMonthActorRef) {
-        this.indexMonthActorRef = indexMonthActorRef;
+    public MonthlyHistoryService(IndexMonthService indexMonthService) {
+        this.indexMonthService = indexMonthService;
     }
-
-    @Override
-    public void onReceive(Object message) {
+    public Stream<Mono<HistoricalQuote>> createMonthlyQuotes(String stockSymbol ) {
         try {
-            String stockSymbol = (String) message;
-            IntStream.range(1, 49)
+            return IntStream.range(1, 49)
                     .mapToObj(this::createMonthRequest)
                     .peek(obj -> obj.setStockSymbol(stockSymbol))
-                    .forEach(res -> indexMonthActorRef.tell(res, self()));
+                    .map(indexMonthService::createHistoricalQuote)
+                    .flatMap(Stream::parallel);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
+        return null;
     }
 
     private StockWithInterval createMonthRequest(int i) {
