@@ -12,30 +12,29 @@ import java.io.InputStreamReader;
 @Component
 public class IndexListService {
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexListService.class);
-    private final ActorRef indexHistoryActorRef;
-    private final ActorRef stockActorRef;
-    private final ActorRef stockDividendActorRef;
-    private final ActorRef stockQuoteActorRef;
-    private final ActorRef stockStatActorRef;
+    private final MonthlyHistoryService monthlyHistoryService;
+    private final StockService stockService;
+    private final StockDividendService stockDividendService;
+    private final StockQuoteService stockQuoteService;
+    private final StockStatService  stockStatService;
 
-    public IndexListService(ActorRef indexHistoryActorRef, ActorRef stockActorRef, ActorRef stockDividendActorRef, ActorRef stockQuoteActorRef, ActorRef stockStatActorRef) {
-        this.indexHistoryActorRef = indexHistoryActorRef;
-        this.stockActorRef = stockActorRef;
-        this.stockDividendActorRef = stockDividendActorRef;
-        this.stockQuoteActorRef = stockQuoteActorRef;
-        this.stockStatActorRef = stockStatActorRef;
+    public IndexListService(MonthlyHistoryService monthlyHistoryService, StockService stockService, StockDividendService stockDividendService, StockQuoteService stockQuoteService, StockStatService stockStatService) {
+        this.monthlyHistoryService = monthlyHistoryService;
+        this.stockService = stockService;
+        this.stockDividendService = stockDividendService;
+        this.stockQuoteService = stockQuoteService;
+        this.stockStatService = stockStatService;
     }
 
-    @Override
-    public void onReceive(Object message) {
-        String fileName = (String) message;
+
+    public void loadFile(String fileName ) {
         LOGGER.info("Loading file={}", fileName);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource(fileName).getInputStream()))) {
             reader.lines()
                     .map(line -> line.split("\t"))
                     .map(arr -> arr[0])
                     .forEach(stockSymbol -> {
-                        indexHistoryActorRef.tell(stockSymbol, self());
+                        monthlyHistoryService.createMonthlyQuotes(stockSymbol);
                         stockActorRef.tell(stockSymbol, self());
                         stockDividendActorRef.tell(stockSymbol, self());
                         stockQuoteActorRef.tell(stockSymbol, self());
