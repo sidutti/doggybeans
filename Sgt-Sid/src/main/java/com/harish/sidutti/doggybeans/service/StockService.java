@@ -19,7 +19,7 @@ public class StockService {
         this.databaseService = databaseService;
     }
 
-    public Mono<Stock> saveDividend(String stockSymbol) {
+    public Mono<Stock> saveStock(String stockSymbol) {
         try {
             Stock stock = YahooFinance.get(stockSymbol);
             stock.getDividend(true);

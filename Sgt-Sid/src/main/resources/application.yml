@@ -1,6 +1,6 @@
 spring:
   application:
-    name: sample-spring-elasticsearch
+    name: doggybeanselastic
   elasticsearch:
     uris: sidutti2:9200
 management:

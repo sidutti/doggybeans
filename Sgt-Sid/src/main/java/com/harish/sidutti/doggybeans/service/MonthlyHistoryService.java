@@ -5,11 +5,12 @@ import com.harish.sidutti.histquotes.HistoricalQuote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Calendar;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @Component
 public class MonthlyHistoryService {
@@ -21,13 +22,15 @@ public class MonthlyHistoryService {
     public MonthlyHistoryService(IndexMonthService indexMonthService) {
         this.indexMonthService = indexMonthService;
     }
-    public Stream<Mono<HistoricalQuote>> createMonthlyQuotes(String stockSymbol ) {
+    public Flux<Mono<HistoricalQuote>> createMonthlyQuotes(String stockSymbol ) {
         try {
-            return IntStream.range(1, 49)
+            return Flux.fromIterable(IntStream.range(1, 49)
                     .mapToObj(this::createMonthRequest)
                     .peek(obj -> obj.setStockSymbol(stockSymbol))
                     .map(indexMonthService::createHistoricalQuote)
-                    .flatMap(Stream::parallel);
+                    .flatMap(Flux::toStream)
+                    .collect(Collectors.toList()));
+
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
