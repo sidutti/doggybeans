@@ -24,6 +24,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
     implementation("org.slf4j:slf4j-api")
     implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("ch.qos.logback:logback-classic:")
     testImplementation("org.slf4j:slf4j-simple")
     testImplementation("junit:junit")
     testImplementation("com.squareup.okhttp3:mockwebserver")
