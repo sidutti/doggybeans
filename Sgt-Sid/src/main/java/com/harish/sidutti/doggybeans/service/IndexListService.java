@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -23,7 +24,7 @@ public class IndexListService {
     private final WebClient client;
     private final String uri;
 
-    public IndexListService(WebClient client, @Value("app.service.name") String uri) {
+    public IndexListService(WebClient client, @Value("${app.service.name}") String uri) {
         this.client = client;
         this.uri = uri;
     }
@@ -50,30 +51,35 @@ public class IndexListService {
         return client.method(HttpMethod.GET)
                 .uri(uri + "/load/stock/" + stockSymbol)
                 .retrieve()
-                .bodyToMono(Stock.class);
+                .bodyToMono(Stock.class)
+                .subscribeOn(Schedulers.parallel());
     }
     private Mono<StockDividend> createDividend(String stockSymbol) {
         return client.method(HttpMethod.GET)
                 .uri(uri + "/load/stockDividend/" + stockSymbol)
                 .retrieve()
-                .bodyToMono(StockDividend.class);
+                .bodyToMono(StockDividend.class)
+                .subscribeOn(Schedulers.parallel());
     }
     private Mono<StockQuote> createStockQuote(String stockSymbol) {
         return client.method(HttpMethod.GET)
                 .uri(uri + "/load/stockQuote/" + stockSymbol)
                 .retrieve()
-                .bodyToMono(StockQuote.class);
+                .bodyToMono(StockQuote.class)
+                .subscribeOn(Schedulers.parallel());
     }
     private Mono<StockStats> createStockStat(String stockSymbol) {
         return client.method(HttpMethod.GET)
                 .uri(uri + "/load/stockStat/" + stockSymbol)
                 .retrieve()
-                .bodyToMono(StockStats.class);
+                .bodyToMono(StockStats.class)
+                .subscribeOn(Schedulers.parallel());
     }
     private Mono<HistoricalQuote> createMonthlyQuote(String stockSymbol) {
         return client.method(HttpMethod.GET)
                 .uri(uri + "/load/monthlyStock/" + stockSymbol)
                 .retrieve()
-                .bodyToMono(HistoricalQuote.class);
+                .bodyToMono(HistoricalQuote.class)
+                .subscribeOn(Schedulers.parallel());
     }
 }
