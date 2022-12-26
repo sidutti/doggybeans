@@ -12,11 +12,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+import reactor.core.Disposable;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class IndexListService {
@@ -30,10 +31,10 @@ public class IndexListService {
     }
 
 
-    public void loadFile(String fileName) {
+    public List<String> loadFile(String fileName) {
         LOGGER.info("Loading file={}", fileName);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource(fileName).getInputStream()))) {
-            reader.lines()
+            return reader.lines()
                     .map(line -> line.split("\t"))
                     .map(arr -> arr[0])
                     .peek(this::createStock)
@@ -41,45 +42,46 @@ public class IndexListService {
                     .peek(this::createStockQuote)
                     .peek(this::createDividend)
                     .peek(this::createMonthlyQuote)
-                    .forEach(LOGGER::debug);
+                    .collect(Collectors.toList());
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
+        return null;
     }
 
-    private Mono<Stock> createStock(String stockSymbol) {
+    private Disposable createStock(String stockSymbol) {
         return client.method(HttpMethod.GET)
                 .uri(uri + "/load/stock/" + stockSymbol)
                 .retrieve()
                 .bodyToMono(Stock.class)
-                .subscribeOn(Schedulers.parallel());
+                .subscribe();
     }
-    private Mono<StockDividend> createDividend(String stockSymbol) {
+    private Disposable createDividend(String stockSymbol) {
         return client.method(HttpMethod.GET)
                 .uri(uri + "/load/stockDividend/" + stockSymbol)
                 .retrieve()
                 .bodyToMono(StockDividend.class)
-                .subscribeOn(Schedulers.parallel());
+                .subscribe();
     }
-    private Mono<StockQuote> createStockQuote(String stockSymbol) {
+    private Disposable createStockQuote(String stockSymbol) {
         return client.method(HttpMethod.GET)
                 .uri(uri + "/load/stockQuote/" + stockSymbol)
                 .retrieve()
                 .bodyToMono(StockQuote.class)
-                .subscribeOn(Schedulers.parallel());
+                .subscribe();
     }
-    private Mono<StockStats> createStockStat(String stockSymbol) {
+    private Disposable createStockStat(String stockSymbol) {
         return client.method(HttpMethod.GET)
                 .uri(uri + "/load/stockStat/" + stockSymbol)
                 .retrieve()
                 .bodyToMono(StockStats.class)
-                .subscribeOn(Schedulers.parallel());
+                .subscribe();
     }
-    private Mono<HistoricalQuote> createMonthlyQuote(String stockSymbol) {
+    private Disposable createMonthlyQuote(String stockSymbol) {
         return client.method(HttpMethod.GET)
                 .uri(uri + "/load/monthlyStock/" + stockSymbol)
                 .retrieve()
                 .bodyToMono(HistoricalQuote.class)
-                .subscribeOn(Schedulers.parallel());
+                .subscribe();
     }
 }

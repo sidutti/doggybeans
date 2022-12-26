@@ -13,17 +13,20 @@ import java.io.IOException;
 @Component
 public class StockQuoteService {
     private static final Logger LOGGER = LoggerFactory.getLogger(StockQuoteService.class);
-    private final DatabaseService databaseService;;
-
+    private final DatabaseService databaseService;
     public StockQuoteService(DatabaseService databaseService) {
         this.databaseService = databaseService;
     }
-    public Mono<StockQuote> saveStockQuote(String stockSymbol ) {
+
+    public Mono<StockQuote> saveStockQuote(String stockSymbol) {
 
         try {
             Stock stock = YahooFinance.get(stockSymbol);
-            stock.getQuote(true);
-            return databaseService.createQuote(stock.getQuote());
+            if (stock != null) {
+                stock.getQuote(true);
+                return databaseService.createQuote(stock.getQuote());
+            }
+            return Mono.empty();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
             return Mono.error(e);

@@ -24,8 +24,11 @@ public class StockDividendService {
 
         try {
             Stock stock = YahooFinance.get(stockSymbol);
-            stock.getDividend(true);
-            return databaseService.createDividend(stock.getDividend());
+            if (stock != null) {
+                stock.getDividend(true);
+                return databaseService.createDividend(stock.getDividend());
+            }
+            return Mono.empty();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
             return Mono.error(e);

@@ -2,24 +2,19 @@ package com.harish.sidutti.doggybeans.web;
 
 import com.harish.sidutti.Stock;
 import com.harish.sidutti.doggybeans.service.*;
-import com.harish.sidutti.histquotes.HistoricalQuote;
 import com.harish.sidutti.quotes.stock.StockDividend;
 import com.harish.sidutti.quotes.stock.StockQuote;
 import com.harish.sidutti.quotes.stock.StockStats;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("load")
 public class Load {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Load.class);
+
     private final IndexListService indexListService;
     private final MonthlyHistoryService monthlyHistoryService;
     private final StockService stockService;
@@ -27,7 +22,7 @@ public class Load {
     private final StockQuoteService stockQuoteService;
     private final StockStatService stockStatService;
 
-    public Load( IndexListService indexListService, MonthlyHistoryService monthlyHistoryService, StockService stockService, StockDividendService stockDividendService, StockQuoteService stockQuoteService, StockStatService stockStatService) {
+    public Load(IndexListService indexListService, MonthlyHistoryService monthlyHistoryService, StockService stockService, StockDividendService stockDividendService, StockQuoteService stockQuoteService, StockStatService stockStatService) {
         this.indexListService = indexListService;
         this.monthlyHistoryService = monthlyHistoryService;
         this.stockService = stockService;
@@ -63,7 +58,7 @@ public class Load {
     }
 
     @GetMapping(value = "monthlyStock/{stockSymbol}")
-    public Flux<Mono<HistoricalQuote>> getMonthlyQuote(@PathVariable String stockSymbol) {
-        return monthlyHistoryService.createMonthlyQuotes(stockSymbol);
+    public void getMonthlyQuote(@PathVariable String stockSymbol) {
+        monthlyHistoryService.createMonthlyQuotes(stockSymbol);
     }
 }

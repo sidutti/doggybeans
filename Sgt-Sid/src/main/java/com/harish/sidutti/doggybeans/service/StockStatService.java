@@ -22,8 +22,11 @@ public class StockStatService {
     public Mono<StockStats> saveStockStat(String stockSymbol) {
         try {
             Stock stock = YahooFinance.get(stockSymbol);
-            stock.getStats(true);
-            return databaseService.createStats(stock.getStats());
+            if (stock != null) {
+                stock.getStats(true);
+                return databaseService.createStats(stock.getStats());
+            }
+            return Mono.empty();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
             return Mono.error(e);
