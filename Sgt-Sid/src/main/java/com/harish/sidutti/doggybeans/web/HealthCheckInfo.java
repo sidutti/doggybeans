@@ -9,12 +9,12 @@ import java.util.concurrent.CompletionStage;
 import java.util.function.Supplier;
 
 public class HealthCheckInfo implements Supplier<CompletionStage<Boolean>> {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+        private final Logger log = LoggerFactory.getLogger(getClass());
 
 
-    @Override
-    public CompletionStage<Boolean> get() {
-        log.info("DemoHealthCheck called");
-        return CompletableFuture.completedFuture(true);
-    }
+        @Override
+        public CompletionStage<Boolean> get() {
+                log.info("DemoHealthCheck called");
+                return CompletableFuture.completedFuture(true);
+        }
 }

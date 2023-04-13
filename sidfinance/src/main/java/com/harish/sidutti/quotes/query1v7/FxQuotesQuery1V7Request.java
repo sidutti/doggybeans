@@ -11,15 +11,15 @@ import java.math.BigDecimal;
  */
 public class FxQuotesQuery1V7Request extends QuotesRequest<FxQuote> {
 
-    public FxQuotesQuery1V7Request(String symbols) {
-        super(symbols);
-    }
+        public FxQuotesQuery1V7Request(String symbols) {
+                super(symbols);
+        }
 
-    @Override
-    protected FxQuote parseJson(JsonNode node) {
-        String symbol = node.get("symbol").asText();
-        BigDecimal price = Utils.getBigDecimal(node.get("regularMarketPrice").asText());
+        @Override
+        protected FxQuote parseJson(JsonNode node) {
+                String symbol = node.get("symbol").asText();
+                BigDecimal price = Utils.getBigDecimal(node.get("regularMarketPrice").asText());
 
-        return new FxQuote(symbol, price);
-    }
+                return new FxQuote(symbol, price);
+        }
 }

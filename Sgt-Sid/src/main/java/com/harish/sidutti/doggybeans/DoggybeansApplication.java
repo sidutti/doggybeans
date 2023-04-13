@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DoggybeansApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(DoggybeansApplication.class, args);
-    }
+        public static void main(String[] args) {
+                SpringApplication.run(DoggybeansApplication.class, args);
+        }
 
 }

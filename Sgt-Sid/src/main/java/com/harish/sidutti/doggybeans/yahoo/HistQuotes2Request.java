@@ -1,10 +1,16 @@
-package com.harish.sidutti.histquotes2;
+package com.harish.sidutti.doggybeans.yahoo;
 
 import com.harish.sidutti.Utils;
 import com.harish.sidutti.YahooFinance;
+import com.harish.sidutti.histquotes.HistoricalQuote;
+import com.harish.sidutti.histquotes.Interval;
+import com.harish.sidutti.histquotes2.CrumbManager;
+import com.harish.sidutti.histquotes2.IntervalMapper;
+import com.harish.sidutti.histquotes2.QueryInterval;
 import com.harish.sidutti.util.RedirectableRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,43 +21,52 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-/**
- * @author Stijn Strickx (modified by Randle McMurphy)
- */
-public class HistDividendsRequest {
+@Service
+public class HistQuotes2Request {
 
 
         public static final Calendar DEFAULT_FROM = Calendar.getInstance();
         public static final Calendar DEFAULT_TO = Calendar.getInstance();
-        // Interval has no meaning here and is not used here
-        // But it's better to leave it because Yahoo's standard query URL still contains it
-        public static final QueryInterval DEFAULT_INTERVAL = QueryInterval.DAILY;
-        private static final Logger log = LoggerFactory.getLogger(HistDividendsRequest.class);
+        public static final QueryInterval DEFAULT_INTERVAL = QueryInterval.MONTHLY;
+        private static final Logger log = LoggerFactory.getLogger(HistQuotes2Request.class);
 
-        static {
-                DEFAULT_FROM.add(Calendar.YEAR, -1);
-        }
 
         private final String symbol;
         private final Calendar from;
         private final Calendar to;
+        private final QueryInterval interval;
 
-        public HistDividendsRequest(String symbol) {
-                this(symbol, DEFAULT_FROM, DEFAULT_TO);
-        }
 
-        public HistDividendsRequest(String symbol, Calendar from, Calendar to) {
+        public HistQuotes2Request(String symbol, Calendar from, Calendar to, QueryInterval interval) {
                 this.symbol = symbol;
                 this.from = this.cleanHistCalendar(from);
                 this.to = this.cleanHistCalendar(to);
+                this.interval = interval;
         }
 
-        public HistDividendsRequest(String symbol, Date from, Date to) {
+        public HistQuotes2Request(String symbol, Date from, Date to) {
+                this(symbol, from, to, DEFAULT_INTERVAL);
+        }
+
+        public HistQuotes2Request(String symbol, Date from, Date to, QueryInterval interval) {
                 this(symbol);
                 this.from.setTime(from);
                 this.to.setTime(to);
                 this.cleanHistCalendar(this.from);
                 this.cleanHistCalendar(this.to);
+        }
+
+        // Constructors to support the old Interval
+        public HistQuotes2Request(String symbol) {
+                this(symbol, DEFAULT_FROM, DEFAULT_TO, Interval.DAILY);
+        }
+
+        public HistQuotes2Request(String symbol, Calendar from, Calendar to, Interval interval) {
+                this(symbol, from, to, IntervalMapper.get(interval));
+        }
+
+        public HistQuotes2Request(String symbol, Date from, Date to, Interval interval) {
+                this(symbol, from, to, IntervalMapper.get(interval));
         }
 
         /**
@@ -67,27 +82,27 @@ public class HistDividendsRequest {
                 return cal;
         }
 
-        public List<HistoricalDividend> getResult() throws IOException {
+        public List<HistoricalQuote> getResult() throws IOException {
+                List<HistoricalQuote> result = new ArrayList<>();
+                BufferedReader br = getBufferedReader();
+                // Parse CSV
+                for (String line = br.readLine(); line != null; line = br.readLine()) {
 
-                List<HistoricalDividend> result = new ArrayList<>();
-
-                if (this.from.after(this.to)) {
-                        log.warn("Unable to retrieve historical dividends. "
-                                    + "From-date should not be after to-date. From: "
-                                    + this.from.getTime() + ", to: " + this.to.getTime());
-                        return result;
+                        log.info("Parsing CSV line: " + Utils.unescape(line));
+                        HistoricalQuote quote = this.parseCSVLine(line);
+                        result.add(quote);
                 }
+                return result;
+        }
+
+        public BufferedReader getBufferedReader() throws IOException {
+
 
                 Map<String, String> params = new LinkedHashMap<>();
                 params.put("period1", String.valueOf(this.from.getTimeInMillis() / 1000));
                 params.put("period2", String.valueOf(this.to.getTimeInMillis() / 1000));
 
-                // Interval has no meaning here and is not used here
-                // But it's better to leave it because Yahoo's standard query URL still contains it
-                params.put("interval", DEFAULT_INTERVAL.getTag());
-
-                // This will instruct Yahoo to return dividends
-                params.put("events", "div");
+                params.put("interval", this.interval.getTag());
 
                 params.put("crumb", CrumbManager.getCrumb());
 
@@ -107,21 +122,19 @@ public class HistDividendsRequest {
                 InputStreamReader is = new InputStreamReader(connection.getInputStream());
                 BufferedReader br = new BufferedReader(is);
                 br.readLine(); // skip the first line
-                // Parse CSV
-                for (String line = br.readLine(); line != null; line = br.readLine()) {
-
-                        log.info("Parsing CSV line: " + Utils.unescape(line));
-                        HistoricalDividend dividend = this.parseCSVLine(line);
-                        result.add(dividend);
-                }
-                return result;
+                return br;
         }
 
-        private HistoricalDividend parseCSVLine(String line) {
+        public HistoricalQuote parseCSVLine(String line) {
                 String[] data = line.split(YahooFinance.QUOTES_CSV_DELIMITER);
-                return new HistoricalDividend(this.symbol,
+                return new HistoricalQuote(this.symbol,
                             Utils.parseHistDate(data[0]),
-                            Utils.getBigDecimal(data[1])
+                            Utils.getBigDecimal(data[1]),
+                            Utils.getBigDecimal(data[3]),
+                            Utils.getBigDecimal(data[2]),
+                            Utils.getBigDecimal(data[4]),
+                            Utils.getBigDecimal(data[5]),
+                            Utils.getLong(data[6])
                 );
         }
 

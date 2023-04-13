@@ -12,26 +12,26 @@ import java.io.IOException;
 
 @Component
 public class StockDividendService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StockDividendService.class);
-    private final DatabaseService databaseService;
+        private static final Logger LOGGER = LoggerFactory.getLogger(StockDividendService.class);
+        private final DatabaseService databaseService;
 
-    public StockDividendService(DatabaseService databaseService) {
-        this.databaseService = databaseService;
-    }
-
-
-    public Mono<StockDividend> saveDividend(String stockSymbol) {
-
-        try {
-            Stock stock = YahooFinance.get(stockSymbol);
-            if (stock != null) {
-                stock.getDividend(true);
-                return databaseService.createDividend(stock.getDividend());
-            }
-            return Mono.empty();
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-            return Mono.error(e);
+        public StockDividendService(DatabaseService databaseService) {
+                this.databaseService = databaseService;
         }
-    }
+
+
+        public Mono<StockDividend> saveDividend(String stockSymbol) {
+
+                try {
+                        Stock stock = YahooFinance.get(stockSymbol);
+                        if (stock != null) {
+                                stock.getDividend(true);
+                                return databaseService.createDividend(stock.getDividend());
+                        }
+                        return Mono.empty();
+                } catch (IOException e) {
+                        LOGGER.error(e.getMessage(), e);
+                        return Mono.error(e);
+                }
+        }
 }

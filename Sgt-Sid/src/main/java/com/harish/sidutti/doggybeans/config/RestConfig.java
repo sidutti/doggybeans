@@ -7,8 +7,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class RestConfig {
 
-    @Bean
-    public WebClient restTemplate() {
-        return WebClient.builder().build();
-    }
+        @Bean
+        public WebClient restTemplate() {
+                return WebClient.builder().build();
+        }
 }

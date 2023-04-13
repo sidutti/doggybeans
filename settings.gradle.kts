@@ -1,4 +1,3 @@
-
 rootProject.name = "doggybeans"
 include(":sidfinance")
 include(":Sgt-Sid")

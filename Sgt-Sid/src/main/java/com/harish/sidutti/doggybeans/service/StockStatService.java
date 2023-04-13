@@ -12,24 +12,24 @@ import java.io.IOException;
 
 @Component
 public class StockStatService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StockStatService.class);
-    private final DatabaseService databaseService;
+        private static final Logger LOGGER = LoggerFactory.getLogger(StockStatService.class);
+        private final DatabaseService databaseService;
 
-    public StockStatService(DatabaseService databaseService) {
-        this.databaseService = databaseService;
-    }
-
-    public Mono<StockStats> saveStockStat(String stockSymbol) {
-        try {
-            Stock stock = YahooFinance.get(stockSymbol);
-            if (stock != null) {
-                stock.getStats(true);
-                return databaseService.createStats(stock.getStats());
-            }
-            return Mono.empty();
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-            return Mono.error(e);
+        public StockStatService(DatabaseService databaseService) {
+                this.databaseService = databaseService;
         }
-    }
+
+        public Mono<StockStats> saveStockStat(String stockSymbol) {
+                try {
+                        Stock stock = YahooFinance.get(stockSymbol);
+                        if (stock != null) {
+                                stock.getStats(true);
+                                return databaseService.createStats(stock.getStats());
+                        }
+                        return Mono.empty();
+                } catch (IOException e) {
+                        LOGGER.error(e.getMessage(), e);
+                        return Mono.error(e);
+                }
+        }
 }

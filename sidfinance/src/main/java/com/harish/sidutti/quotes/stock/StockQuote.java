@@ -17,317 +17,319 @@ import java.util.TimeZone;
 @Document(indexName = "stockquote")
 public class StockQuote implements JacksonSerializable {
 
-    @Id
-    private String symbol;
+        @Id
+        private String symbol;
 
-    private TimeZone timeZone;
+        private TimeZone timeZone;
 
-    private BigDecimal ask;
-    private Long askSize;
-    private BigDecimal bid;
-    private Long bidSize;
-    private BigDecimal price;
+        private BigDecimal ask;
+        private Long askSize;
+        private BigDecimal bid;
+        private Long bidSize;
+        private BigDecimal price;
 
-    private Long lastTradeSize;
-    private String lastTradeDateStr;
-    private String lastTradeTimeStr;
-    private Calendar lastTradeTime;
+        private Long lastTradeSize;
+        private String lastTradeDateStr;
+        private String lastTradeTimeStr;
+        private Calendar lastTradeTime;
 
-    private BigDecimal open;
-    private BigDecimal previousClose;
-    private BigDecimal dayLow;
-    private BigDecimal dayHigh;
+        private BigDecimal open;
+        private BigDecimal previousClose;
+        private BigDecimal dayLow;
+        private BigDecimal dayHigh;
 
-    private BigDecimal yearLow;
-    private BigDecimal yearHigh;
-    private BigDecimal priceAvg50;
-    private BigDecimal priceAvg200;
+        private BigDecimal yearLow;
+        private BigDecimal yearHigh;
+        private BigDecimal priceAvg50;
+        private BigDecimal priceAvg200;
 
-    private Long volume;
-    private Long avgVolume;
-    public StockQuote(){
+        private Long volume;
+        private Long avgVolume;
 
-    }
-    public StockQuote(String symbol) {
-        this.symbol = symbol;
-    }
+        public StockQuote() {
 
-    /**
-     * @return difference between current price and previous close
-     */
-    public BigDecimal getChange() {
-        if (this.price == null || this.previousClose == null) {
-            return null;
         }
-        return this.price.subtract(this.previousClose);
-    }
 
-    /**
-     * @return change relative to previous close
-     */
-    public BigDecimal getChangeInPercent() {
-        return Utils.getPercent(this.getChange(), this.previousClose);
-    }
-
-    /**
-     * @return difference between current price and year low
-     */
-    public BigDecimal getChangeFromYearLow() {
-        if (this.price == null || this.yearLow == null) {
-            return null;
+        public StockQuote(String symbol) {
+                this.symbol = symbol;
         }
-        return this.price.subtract(this.yearLow);
-    }
 
-    /**
-     * @return change from year low relative to year low
-     */
-    public BigDecimal getChangeFromYearLowInPercent() {
-        return Utils.getPercent(this.getChangeFromYearLow(), this.yearLow);
-    }
-
-    /**
-     * @return difference between current price and year high
-     */
-    public BigDecimal getChangeFromYearHigh() {
-        if (this.price == null || this.yearHigh == null) {
-            return null;
+        /**
+         * @return difference between current price and previous close
+         */
+        public BigDecimal getChange() {
+                if (this.price == null || this.previousClose == null) {
+                        return null;
+                }
+                return this.price.subtract(this.previousClose);
         }
-        return this.price.subtract(this.yearHigh);
-    }
 
-    /**
-     * @return change from year high relative to year high
-     */
-    public BigDecimal getChangeFromYearHighInPercent() {
-        return Utils.getPercent(this.getChangeFromYearHigh(), this.yearHigh);
-    }
-
-    /**
-     * @return difference between current price and 50 day moving average
-     */
-    public BigDecimal getChangeFromAvg50() {
-        if (this.price == null || this.priceAvg50 == null) {
-            return null;
+        /**
+         * @return change relative to previous close
+         */
+        public BigDecimal getChangeInPercent() {
+                return Utils.getPercent(this.getChange(), this.previousClose);
         }
-        return this.price.subtract(this.priceAvg50);
-    }
 
-    /**
-     * @return change from 50 day moving average relative to 50 day moving average
-     */
-    public BigDecimal getChangeFromAvg50InPercent() {
-        return Utils.getPercent(this.getChangeFromAvg50(), this.priceAvg50);
-    }
-
-    /**
-     * @return difference between current price and 200 day moving average
-     */
-    public BigDecimal getChangeFromAvg200() {
-        if (this.price == null || this.priceAvg200 == null) {
-            return null;
+        /**
+         * @return difference between current price and year low
+         */
+        public BigDecimal getChangeFromYearLow() {
+                if (this.price == null || this.yearLow == null) {
+                        return null;
+                }
+                return this.price.subtract(this.yearLow);
         }
-        return this.price.subtract(this.priceAvg200);
-    }
 
-    /**
-     * @return change from 200 day moving average relative to 200 day moving average
-     */
-    public BigDecimal getChangeFromAvg200InPercent() {
-        return Utils.getPercent(this.getChangeFromAvg200(), this.priceAvg200);
-    }
+        /**
+         * @return change from year low relative to year low
+         */
+        public BigDecimal getChangeFromYearLowInPercent() {
+                return Utils.getPercent(this.getChangeFromYearLow(), this.yearLow);
+        }
 
-    public String getSymbol() {
-        return symbol;
-    }
+        /**
+         * @return difference between current price and year high
+         */
+        public BigDecimal getChangeFromYearHigh() {
+                if (this.price == null || this.yearHigh == null) {
+                        return null;
+                }
+                return this.price.subtract(this.yearHigh);
+        }
 
-    public BigDecimal getAsk() {
-        return ask;
-    }
+        /**
+         * @return change from year high relative to year high
+         */
+        public BigDecimal getChangeFromYearHighInPercent() {
+                return Utils.getPercent(this.getChangeFromYearHigh(), this.yearHigh);
+        }
 
-    public void setAsk(BigDecimal ask) {
-        this.ask = ask;
-    }
+        /**
+         * @return difference between current price and 50 day moving average
+         */
+        public BigDecimal getChangeFromAvg50() {
+                if (this.price == null || this.priceAvg50 == null) {
+                        return null;
+                }
+                return this.price.subtract(this.priceAvg50);
+        }
 
-    public Long getAskSize() {
-        return askSize;
-    }
+        /**
+         * @return change from 50 day moving average relative to 50 day moving average
+         */
+        public BigDecimal getChangeFromAvg50InPercent() {
+                return Utils.getPercent(this.getChangeFromAvg50(), this.priceAvg50);
+        }
 
-    public void setAskSize(Long askSize) {
-        this.askSize = askSize;
-    }
+        /**
+         * @return difference between current price and 200 day moving average
+         */
+        public BigDecimal getChangeFromAvg200() {
+                if (this.price == null || this.priceAvg200 == null) {
+                        return null;
+                }
+                return this.price.subtract(this.priceAvg200);
+        }
 
-    public BigDecimal getBid() {
-        return bid;
-    }
+        /**
+         * @return change from 200 day moving average relative to 200 day moving average
+         */
+        public BigDecimal getChangeFromAvg200InPercent() {
+                return Utils.getPercent(this.getChangeFromAvg200(), this.priceAvg200);
+        }
 
-    public void setBid(BigDecimal bid) {
-        this.bid = bid;
-    }
+        public String getSymbol() {
+                return symbol;
+        }
 
-    public Long getBidSize() {
-        return bidSize;
-    }
+        public BigDecimal getAsk() {
+                return ask;
+        }
 
-    public void setBidSize(Long bidSize) {
-        this.bidSize = bidSize;
-    }
+        public void setAsk(BigDecimal ask) {
+                this.ask = ask;
+        }
 
-    public BigDecimal getPrice() {
-        return price;
-    }
+        public Long getAskSize() {
+                return askSize;
+        }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
+        public void setAskSize(Long askSize) {
+                this.askSize = askSize;
+        }
 
-    public Long getLastTradeSize() {
-        return lastTradeSize;
-    }
+        public BigDecimal getBid() {
+                return bid;
+        }
 
-    public void setLastTradeSize(Long lastTradeSize) {
-        this.lastTradeSize = lastTradeSize;
-    }
+        public void setBid(BigDecimal bid) {
+                this.bid = bid;
+        }
 
-    public String getLastTradeDateStr() {
-        return lastTradeDateStr;
-    }
+        public Long getBidSize() {
+                return bidSize;
+        }
 
-    public void setLastTradeDateStr(String lastTradeDateStr) {
-        this.lastTradeDateStr = lastTradeDateStr;
-    }
+        public void setBidSize(Long bidSize) {
+                this.bidSize = bidSize;
+        }
 
-    public String getLastTradeTimeStr() {
-        return lastTradeTimeStr;
-    }
+        public BigDecimal getPrice() {
+                return price;
+        }
 
-    public void setLastTradeTimeStr(String lastTradeTimeStr) {
-        this.lastTradeTimeStr = lastTradeTimeStr;
-    }
+        public void setPrice(BigDecimal price) {
+                this.price = price;
+        }
 
-    /**
-     * Will derive the time zone from the exchange to parse the date time into a Calendar object.
-     * This will not react to changes in the lastTradeDateStr and lastTradeTimeStr
-     *
-     * @return last trade date time
-     */
-    public Calendar getLastTradeTime() {
-        return lastTradeTime;
-    }
+        public Long getLastTradeSize() {
+                return lastTradeSize;
+        }
 
-    public void setLastTradeTime(Calendar lastTradeTime) {
-        this.lastTradeTime = lastTradeTime;
-    }
+        public void setLastTradeSize(Long lastTradeSize) {
+                this.lastTradeSize = lastTradeSize;
+        }
 
-    /**
-     * Will use the provided time zone to parse the date time into a Calendar object
-     * Reacts to changes in the lastTradeDateStr and lastTradeTimeStr
-     *
-     * @param timeZone time zone where the stock is traded
-     * @return last trade date time
-     */
-    public Calendar getLastTradeTime(TimeZone timeZone) {
-        return Utils.parseDateTime(this.lastTradeDateStr, this.lastTradeTimeStr, timeZone);
-    }
+        public String getLastTradeDateStr() {
+                return lastTradeDateStr;
+        }
 
-    public TimeZone getTimeZone() {
-        return timeZone;
-    }
+        public void setLastTradeDateStr(String lastTradeDateStr) {
+                this.lastTradeDateStr = lastTradeDateStr;
+        }
 
-    public void setTimeZone(TimeZone timeZone) {
-        this.timeZone = timeZone;
-    }
+        public String getLastTradeTimeStr() {
+                return lastTradeTimeStr;
+        }
 
-    public BigDecimal getOpen() {
-        return open;
-    }
+        public void setLastTradeTimeStr(String lastTradeTimeStr) {
+                this.lastTradeTimeStr = lastTradeTimeStr;
+        }
 
-    public void setOpen(BigDecimal open) {
-        this.open = open;
-    }
+        /**
+         * Will derive the time zone from the exchange to parse the date time into a Calendar object.
+         * This will not react to changes in the lastTradeDateStr and lastTradeTimeStr
+         *
+         * @return last trade date time
+         */
+        public Calendar getLastTradeTime() {
+                return lastTradeTime;
+        }
 
-    public BigDecimal getPreviousClose() {
-        return previousClose;
-    }
+        public void setLastTradeTime(Calendar lastTradeTime) {
+                this.lastTradeTime = lastTradeTime;
+        }
 
-    public void setPreviousClose(BigDecimal previousClose) {
-        this.previousClose = previousClose;
-    }
+        /**
+         * Will use the provided time zone to parse the date time into a Calendar object
+         * Reacts to changes in the lastTradeDateStr and lastTradeTimeStr
+         *
+         * @param timeZone time zone where the stock is traded
+         * @return last trade date time
+         */
+        public Calendar getLastTradeTime(TimeZone timeZone) {
+                return Utils.parseDateTime(this.lastTradeDateStr, this.lastTradeTimeStr, timeZone);
+        }
 
-    public BigDecimal getDayLow() {
-        return dayLow;
-    }
+        public TimeZone getTimeZone() {
+                return timeZone;
+        }
 
-    public void setDayLow(BigDecimal dayLow) {
-        this.dayLow = dayLow;
-    }
+        public void setTimeZone(TimeZone timeZone) {
+                this.timeZone = timeZone;
+        }
 
-    public BigDecimal getDayHigh() {
-        return dayHigh;
-    }
+        public BigDecimal getOpen() {
+                return open;
+        }
 
-    public void setDayHigh(BigDecimal dayHigh) {
-        this.dayHigh = dayHigh;
-    }
+        public void setOpen(BigDecimal open) {
+                this.open = open;
+        }
 
-    public BigDecimal getYearLow() {
-        return yearLow;
-    }
+        public BigDecimal getPreviousClose() {
+                return previousClose;
+        }
 
-    public void setYearLow(BigDecimal yearLow) {
-        this.yearLow = yearLow;
-    }
+        public void setPreviousClose(BigDecimal previousClose) {
+                this.previousClose = previousClose;
+        }
 
-    public BigDecimal getYearHigh() {
-        return yearHigh;
-    }
+        public BigDecimal getDayLow() {
+                return dayLow;
+        }
 
-    public void setYearHigh(BigDecimal yearHigh) {
-        this.yearHigh = yearHigh;
-    }
+        public void setDayLow(BigDecimal dayLow) {
+                this.dayLow = dayLow;
+        }
 
-    /**
-     * @return 50 day moving average
-     */
-    public BigDecimal getPriceAvg50() {
-        return priceAvg50;
-    }
+        public BigDecimal getDayHigh() {
+                return dayHigh;
+        }
 
-    public void setPriceAvg50(BigDecimal priceAvg50) {
-        this.priceAvg50 = priceAvg50;
-    }
+        public void setDayHigh(BigDecimal dayHigh) {
+                this.dayHigh = dayHigh;
+        }
 
-    /**
-     * @return 200 day moving average
-     */
-    public BigDecimal getPriceAvg200() {
-        return priceAvg200;
-    }
+        public BigDecimal getYearLow() {
+                return yearLow;
+        }
 
-    public void setPriceAvg200(BigDecimal priceAvg200) {
-        this.priceAvg200 = priceAvg200;
-    }
+        public void setYearLow(BigDecimal yearLow) {
+                this.yearLow = yearLow;
+        }
 
-    public Long getVolume() {
-        return volume;
-    }
+        public BigDecimal getYearHigh() {
+                return yearHigh;
+        }
 
-    public void setVolume(Long volume) {
-        this.volume = volume;
-    }
+        public void setYearHigh(BigDecimal yearHigh) {
+                this.yearHigh = yearHigh;
+        }
 
-    public Long getAvgVolume() {
-        return avgVolume;
-    }
+        /**
+         * @return 50 day moving average
+         */
+        public BigDecimal getPriceAvg50() {
+                return priceAvg50;
+        }
 
-    public void setAvgVolume(Long avgVolume) {
-        this.avgVolume = avgVolume;
-    }
+        public void setPriceAvg50(BigDecimal priceAvg50) {
+                this.priceAvg50 = priceAvg50;
+        }
 
-    @Override
-    public String toString() {
-        return "Ask: " + this.ask + ", Bid: " + this.bid + ", Price: " + this.price + ", Prev close: " + this.previousClose;
-    }
+        /**
+         * @return 200 day moving average
+         */
+        public BigDecimal getPriceAvg200() {
+                return priceAvg200;
+        }
+
+        public void setPriceAvg200(BigDecimal priceAvg200) {
+                this.priceAvg200 = priceAvg200;
+        }
+
+        public Long getVolume() {
+                return volume;
+        }
+
+        public void setVolume(Long volume) {
+                this.volume = volume;
+        }
+
+        public Long getAvgVolume() {
+                return avgVolume;
+        }
+
+        public void setAvgVolume(Long avgVolume) {
+                this.avgVolume = avgVolume;
+        }
+
+        @Override
+        public String toString() {
+                return "Ask: " + this.ask + ", Bid: " + this.bid + ", Price: " + this.price + ", Prev close: " + this.previousClose;
+        }
 
 }
 
