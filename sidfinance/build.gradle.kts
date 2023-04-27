@@ -1,7 +1,7 @@
 plugins {
     id("java")
     id("io.spring.dependency-management").version("1.1.0")
-    id("org.springframework.boot").version("3.0.0").apply(false)
+    id("org.springframework.boot").version("3.0.6").apply(false)
 }
 apply {
     plugin("java")
@@ -28,7 +28,7 @@ dependencies {
     testImplementation("org.slf4j:slf4j-simple")
     testImplementation("junit:junit")
     testImplementation("com.squareup.okhttp3:mockwebserver")
-    testImplementation("com.google.guava:guava")
+
     testImplementation("org.yaml:snakeyaml")
 }
 
