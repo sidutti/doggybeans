@@ -1,5 +1,5 @@
 plugins {
-    id("org.springframework.boot").version("3.0.6")
+    id("org.springframework.boot").version("3.1.0")
     id("io.spring.dependency-management").version("1.1.0")
     id("java")
     kotlin("jvm") version "1.7.10"
@@ -17,7 +17,6 @@ repositories {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
-    implementation(project(":sidfinance"))
     implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
