@@ -1,6 +1,10 @@
 package com.harish.sidutti.doggybeans.dto;
 
-public record TitleEpisode(String tconst, String parentTconst, String seasonNumber, String episodeNumber) {
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+
+@Document(indexName="titleepisode")
+public record TitleEpisode(@Id String tconst, String parentTconst, String seasonNumber, String episodeNumber) {
     public TitleEpisode(String[] data){
         this( data[0],data[1],data[2],data[3]);
     }
